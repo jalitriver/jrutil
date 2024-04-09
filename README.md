@@ -1,0 +1,2 @@
+# jrutil
+Go Utility Library
