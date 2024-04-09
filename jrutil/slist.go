@@ -22,7 +22,7 @@ type SList[T any] struct {
 	length uint64
 }
 
-func New[T any]() *SList[T] {
+func NewSList[T any]() *SList[T] {
 	return nil
 }
 
@@ -72,7 +72,7 @@ func (l *SList[T]) Tail() *SList[T] {
 // Reverse the list.
 func (l *SList[T]) Reverse() *SList[T] {
 
-	result := New[T]()
+	result := NewSList[T]()
 
 	for range l.Length() {
 		result = result.PushFront(l.value)
@@ -116,7 +116,7 @@ func (l *SList[T]) DropWhile(f func(x T) bool) *SList[T] {
 // implementation is faster than a recursive implementation (which
 // does not need to call Reverse()) even for small lists.
 func (l *SList[T]) Take(n uint64) *SList[T] {
-	result := New[T]()
+	result := NewSList[T]()
 
 	for range min(n, l.Length()) {
 		result = result.PushFront(l.value)
@@ -129,7 +129,7 @@ func (l *SList[T]) Take(n uint64) *SList[T] {
 // Return the first elements from the head of the list while the
 // predicate is true.
 func (l *SList[T]) TakeWhile(f func(x T) bool) *SList[T] {
-	result := New[T]()
+	result := NewSList[T]()
 
 	for range l.Length() {
 		if !f(l.value) {

@@ -7,7 +7,7 @@ type Stack[T comparable] struct {
 	items []T
 }
 
-func New[T comparable]() *Stack[T] {
+func NewStack[T comparable]() *Stack[T] {
 	return &Stack[T] {}
 }
 
