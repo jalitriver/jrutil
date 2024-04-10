@@ -16,13 +16,16 @@ import (
 	"strings"
 )
 
-type SList[T any] struct {
+// The elements in the list are constrained by type fmt.Stringer
+// because we want to be able to convert the list to string which
+// requires converting each element in the list to a string.
+type SList[T fmt.Stringer] struct {
 	value  T
 	next   *SList[T]
 	length uint64
 }
 
-func NewSList[T any]() *SList[T] {
+func NewSList[T fmt.Stringer]() *SList[T] {
 	return nil
 }
 
