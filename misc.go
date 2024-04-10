@@ -5,13 +5,13 @@ import (
 	"math/rand/v2"
 )
 
-// Useful for making pointers to intrinsic types like int for which
-// the address-of operator does not work.
+// MakePtr is useful for making pointers from intrinsic types like int
+// for which the address-of operator does not work.
 func MakePtr[T any](x T) *T {
 	return &x
 }
 
-// Poor man's ternary operator.
+// IfElse is similar to C's ternary operator.
 func IfElse[T any](b bool, consequent T, alternative T) T {
 	if b {
 		return consequent
@@ -19,7 +19,8 @@ func IfElse[T any](b bool, consequent T, alternative T) T {
 	return alternative
 }
 
-// Return a slice of bytes initialzed from crypto.rand.Read().
+// MakeRandomBytes returns a slice of bytes initialzed from
+// crypto.rand.Read().
 func MakeRandomBytes(n uint64) ([]byte, error) {
 	bs := make([]byte, 32)
 	_, err := crand.Read(bs)
@@ -29,8 +30,8 @@ func MakeRandomBytes(n uint64) ([]byte, error) {
 	return bs, nil
 }
 
-// Return a new math.rand.Rand (v2) instance that uses source that is
-// seeded with random bytes from crypto.rand.Read().
+// NewRand returns a new math.rand.Rand (v2) instance that uses source
+// that is seeded with random bytes from crypto.rand.Read().
 func NewRand() (*rand.Rand, error) {
 	bs, err := MakeRandomBytes(32)
 	if err != nil {

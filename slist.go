@@ -16,19 +16,23 @@ import (
 	"strings"
 )
 
-// The elements in the list are constrained by type fmt.Stringer
-// because we want to be able to convert the list to string which
-// requires converting each element in the list to a string.
+// SList is a value and a recursive pointer to another list.  The
+// elements in the list are constrained by type fmt.Stringer because
+// we want to be able to convert the list to string which requires
+// converting each element in the list to a string.
 type SList[T fmt.Stringer] struct {
 	value  T
 	next   *SList[T]
 	length uint64
 }
 
+// NewSList returns a new SList.
 func NewSList[T fmt.Stringer]() *SList[T] {
 	return nil
 }
 
+// Empty returns true if the list is empty; otherwise, it returns
+// false.
 func (l *SList[T]) Empty() bool {
 	if l == nil {
 		return true
@@ -36,7 +40,8 @@ func (l *SList[T]) Empty() bool {
 	return false
 }
 
-// You have to build the list back-to-front.
+// PushFront appends the value to the front of the list.  This method
+// is O(1) is generally used to build the list back-to-front.
 func (l *SList[T]) PushFront(value T) *SList[T] {
 	result := &SList[T]{
 		value: value,
@@ -50,6 +55,7 @@ func (l *SList[T]) PushFront(value T) *SList[T] {
 	return result
 }
 
+// Length returns the length of the list.  This method is O(1).
 func (l *SList[T]) Length() uint64 {
 	if l == nil {
 		return 0
@@ -57,6 +63,7 @@ func (l *SList[T]) Length() uint64 {
 	return l.length
 }
 
+// Head returns the value at the front of the list.
 func (l *SList[T]) Head() (T, bool) {
 	if l == nil {
 		var zero T
@@ -65,6 +72,7 @@ func (l *SList[T]) Head() (T, bool) {
 	return l.value, true
 }
 
+// Tail returns the rest of the list which is the same as Drop(1).
 func (l *SList[T]) Tail() *SList[T] {
 	if l == nil {
 		return nil
@@ -72,7 +80,9 @@ func (l *SList[T]) Tail() *SList[T] {
 	return l.next
 }
 
-// Reverse the list.
+// Reverse returns a new list that is the reverse of this list.  This
+// method is often necessary, but it is O(N) and should be used
+// sparingly.
 func (l *SList[T]) Reverse() *SList[T] {
 
 	result := NewSList[T]()
@@ -85,7 +95,7 @@ func (l *SList[T]) Reverse() *SList[T] {
 	return result
 }
 
-// Remove the first n elements from the head of the list.
+// Drop removes the first n elements from the front of the list.
 func (l *SList[T]) Drop(n uint64) *SList[T] {
 
 	for range min(n, l.Length()) {
@@ -95,7 +105,7 @@ func (l *SList[T]) Drop(n uint64) *SList[T] {
 	return l
 }
 
-// Remove the first elements from the head of the list until the
+// DropUntil removes the elements from the head of the list until the
 // predicate is true.
 func (l *SList[T]) DropUntil(f func(x T) bool) *SList[T] {
 
@@ -109,15 +119,17 @@ func (l *SList[T]) DropUntil(f func(x T) bool) *SList[T] {
 	return l
 }
 
-// Remove the first elements from the head of the list until the
+// DropWhile removes elements from the head of the list while the
 // predicate is true.
 func (l *SList[T]) DropWhile(f func(x T) bool) *SList[T] {
 	return l.DropUntil(func(x T) bool {return !f(x)})
 }
 
-// Return the first n elements.  Profiling shows this is
-// implementation is faster than a recursive implementation (which
-// does not need to call Reverse()) even for small lists.
+// Take returns the first n elements.  This method is O(N) and should
+// be used sparingly if n is large.  (Profiling shows this is
+// implementation is faster (even for small lists) than a recursive
+// implementation even though this implement requires a call to
+// Reverse().)
 func (l *SList[T]) Take(n uint64) *SList[T] {
 	result := NewSList[T]()
 
@@ -129,8 +141,9 @@ func (l *SList[T]) Take(n uint64) *SList[T] {
 	return result.Reverse()
 }
 
-// Return the first elements from the head of the list while the
-// predicate is true.
+// TakeWhile returns the elements from the head of the list while the
+// predicate is true.  This method is O(N) and should be used
+// sparingly if taking many elements.
 func (l *SList[T]) TakeWhile(f func(x T) bool) *SList[T] {
 	result := NewSList[T]()
 
@@ -145,23 +158,25 @@ func (l *SList[T]) TakeWhile(f func(x T) bool) *SList[T] {
 	return result.Reverse()
 }
 
-// Return the first elements from the head of the list until the
-// predicate is true.
+// TakeUntil returns elements from the head of the list until the
+// predicate is true.  This method is O(N) and should be used
+// sparingly if taking many elements.
 func (l *SList[T]) TakeUntil(f func(x T) bool) *SList[T] {
 	return l.TakeWhile(func (x T) bool {return !f(x)})
 }
 
-// Return true if the list contains an element that satisfies the
-// predicate.
+// Contains returns true if the list contains an element that
+// satisfies the predicate.
 func (l *SList[T]) Contains(f func(x T) bool) bool {
 	return l.DropUntil(f) != nil
 }
 
-// Return the nth element (zero-based).
+// Nth returns the nth element (zero-based).
 func (l *SList[T]) Nth(n uint64) (T, bool) {
 	return l.Drop(n).Head()
 }
 
+// String returns the string representation of the list.
 func (l *SList[T]) String() string {
 	var b strings.Builder
 

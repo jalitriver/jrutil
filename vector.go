@@ -1,7 +1,11 @@
 package jrutil
 
+// Vector is a type alias for []any.
 type Vector[T any] []any
 
+// Insert inserts the value at the index.  If the index is greater
+// than the length of the vector, the item is inserted at the end of
+// the vector.  This method is O(N) and should be used sparingly.
 func (v Vector[T]) Insert(index uint64, value T) Vector[T] {
 
 	// Sanity check.  "index" should be no larger than one beyond the
@@ -25,10 +29,13 @@ func (v Vector[T]) Insert(index uint64, value T) Vector[T] {
 	return v
 }
 
+// PushBack appends the value to the end of the vector.
 func (v Vector[T]) PushBack(value T) Vector[T] {
 	return append(v, value)
 }
 
+// PushFront appends the value to the front of the vector.  This
+// method is O(N) and should be used sparingly.
 func (v Vector[T]) PushFront(value T) Vector[T] {
 	return v.Insert(0, value)
 }
