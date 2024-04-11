@@ -50,7 +50,7 @@ func NewRand() (*rand.Rand, error) {
 func MergeSlices[T cmp.Ordered](
 	xs []T,
 	ys []T,
-	f func(x, y T) bool) []T {
+	isLessThan func(x, y T) bool) []T {
 
 	// Get the length of both slices.
 	xLen := uint64(len(xs))
@@ -61,35 +61,35 @@ func MergeSlices[T cmp.Ordered](
 	result := make([]T, rLen)
 
 	// Merge the lists into the result.
-	xIndex := uint64(0)
-	yIndex := uint64(0)
+	xsIndex := uint64(0)
+	ysIndex := uint64(0)
 	for i := uint64(0); i < rLen; i++ {
 
 		// When we run out of xs, the next value must come from ys.
-		if xIndex >= xLen {
-			result[i] = ys[yIndex]
-			yIndex++
+		if xsIndex >= xLen {
+			result[i] = ys[ysIndex]
+			ysIndex++
 			continue
 		}
 
 		// When we run out of ys, the next value must come from xs.
-		if yIndex >= yLen {
-			result[i] = xs[xIndex]
-			xIndex++
+		if ysIndex >= yLen {
+			result[i] = xs[xsIndex]
+			xsIndex++
 			continue
 		}
 
 		// We still have values in both xs and ys.  Because xs and ys
-		// are both sorted, the value at xIndex is the smallest value
-		// in xs, and the value at yIndex is the smallest value in ys.
-		// We just need to compare the two values at xIndex and yIndex
-		// and copy the smaller to the result.
-		if f(xs[xIndex], ys[yIndex]) {
-			result[i] = xs[xIndex]
-			xIndex++
+		// are both sorted, the value at xsIndex is the smallest value
+		// in xs, and the value at ysIndex is the smallest value in
+		// ys.  We just need to compare the two values at xsIndex and
+		// ysIndex and copy the smaller to the result.
+		if isLessThan(xs[xsIndex], ys[ysIndex]) {
+			result[i] = xs[xsIndex]
+			xsIndex++
 		} else {
-			result[i] = ys[yIndex]
-			yIndex++
+			result[i] = ys[ysIndex]
+			ysIndex++
 		}
 
 	}
@@ -101,7 +101,7 @@ func MergeSlices[T cmp.Ordered](
 // function f.
 func MergeSortSlices[T cmp.Ordered](
 	xs []T,
-	LessThanFn func(x1, x2 T) bool) []T {
+	isLessThan func(x1, x2 T) bool) []T {
 
 	// Base case.
 	if len(xs) <= 1 {
@@ -111,7 +111,7 @@ func MergeSortSlices[T cmp.Ordered](
 	// Divide and conquer.
 	mid := uint64(len(xs) / 2)
 	return MergeSlices(
-		MergeSortSlices(xs[:mid], LessThanFn),
-		MergeSortSlices(xs[mid:], LessThanFn),
-		LessThanFn)
+		MergeSortSlices(xs[:mid], isLessThan),
+		MergeSortSlices(xs[mid:], isLessThan),
+		isLessThan)
 }

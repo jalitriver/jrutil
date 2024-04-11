@@ -80,7 +80,7 @@ func TestMerge(t *testing.T) {
 		actual := MergeSlices(d.xs, d.ys, cmp.Less[int])
 		if !slices.Equal(d.expected, actual) {
 			t.Errorf(
-				"Merge(%v, %v): expected=%v  actual=%v",
+				"MergeSlices(%v, %v): expected=%v  actual=%v",
 				d.xs, d.ys, d.expected, actual)
 		}
 	}
@@ -125,9 +125,9 @@ func TestMergeSort(t *testing.T) {
 
 	for _, d := range data {
 		actual := MergeSortSlices(d.xs, cmp.Less[int])
-		if !slices.Equal(d.expected, actual) {
+		if !slices.Equal(actual, d.expected) {
 			t.Errorf(
-				"MergeSort(%v): expected=%v  actual=%v",
+				"MergeSortSlices(%v): expected=%v  actual=%v",
 				d.xs, d.expected, actual)
 		}
 	}
