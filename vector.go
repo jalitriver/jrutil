@@ -19,13 +19,13 @@ func (v Vector[T]) Insert(index uint64, value T) Vector[T] {
 	// Shift (which overwrites the "zero" that was just appended)
 	vLen := uint64(len(v))
 	iMax := vLen - index
-	for i := uint64(1) ; i < iMax ; i++ {
-		v[vLen - i] = v[vLen - i - 1]
+	for i := uint64(1); i < iMax; i++ {
+		v[vLen-i] = v[vLen-i-1]
 	}
 
 	// Insert the new value.
 	v[index] = value
-	
+
 	return v
 }
 

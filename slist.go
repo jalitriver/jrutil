@@ -122,7 +122,7 @@ func (l *SList[T]) DropUntil(f func(x T) bool) *SList[T] {
 // DropWhile removes elements from the head of the list while the
 // predicate is true.
 func (l *SList[T]) DropWhile(f func(x T) bool) *SList[T] {
-	return l.DropUntil(func(x T) bool {return !f(x)})
+	return l.DropUntil(func(x T) bool { return !f(x) })
 }
 
 // Take returns the first n elements.  This method is O(N) and should
@@ -162,7 +162,7 @@ func (l *SList[T]) TakeWhile(f func(x T) bool) *SList[T] {
 // predicate is true.  This method is O(N) and should be used
 // sparingly if taking many elements.
 func (l *SList[T]) TakeUntil(f func(x T) bool) *SList[T] {
-	return l.TakeWhile(func (x T) bool {return !f(x)})
+	return l.TakeWhile(func(x T) bool { return !f(x) })
 }
 
 // Contains returns true if the list contains an element that

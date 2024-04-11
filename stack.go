@@ -7,7 +7,7 @@ type Stack[T comparable] struct {
 
 // NewStack returns a new stack.
 func NewStack[T comparable]() *Stack[T] {
-	return &Stack[T] {}
+	return &Stack[T]{}
 }
 
 // Push pushes the item onto the stack.
@@ -26,8 +26,8 @@ func (s *Stack[T]) Pop() (T, bool) {
 	}
 
 	// Pop the last value from the slice.
-	result := s.items[len(s.items) - 1]
-	s.items = s.items[:len(s.items) - 1]
+	result := s.items[len(s.items)-1]
+	s.items = s.items[:len(s.items)-1]
 	return result, true
 }
 
