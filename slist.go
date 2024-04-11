@@ -130,7 +130,7 @@ func (l *SList[T]) Reverse() *SList[T] {
 
 	result := NewSList[T]()
 
-	for range l.Length() {
+	for l != nil {
 		result = result.PushFront(l.value)
 		l = l.next
 	}
@@ -138,10 +138,12 @@ func (l *SList[T]) Reverse() *SList[T] {
 	return result
 }
 
-// Drop removes the first n elements from the front of the list.
+// Drop removes the first n elements from the front of the list.  This
+// method is relatively efficient because it does not have to allocate
+// or deallocate any memory.
 func (l *SList[T]) Drop(n uint64) *SList[T] {
 
-	for range min(n, l.Length()) {
+	for i := uint64(0); (i < n) && (l != nil); i++ {
 		l = l.next
 	}
 
@@ -152,7 +154,7 @@ func (l *SList[T]) Drop(n uint64) *SList[T] {
 // predicate is true.
 func (l *SList[T]) DropUntil(f func(x T) bool) *SList[T] {
 
-	for range l.Length() {
+	for l != nil {
 		if f(l.value) {
 			break
 		}
@@ -168,15 +170,15 @@ func (l *SList[T]) DropWhile(f func(x T) bool) *SList[T] {
 	return l.DropUntil(func(x T) bool { return !f(x) })
 }
 
-// Take returns the first n elements.  This method is O(N) and should
-// be used sparingly if n is large.  (Profiling shows this is
-// implementation is faster (even for small lists) than a recursive
-// implementation even though this implement requires a call to
-// Reverse().)
+// Take returns the first n elements.  This method is relatively
+// inefficient because it has to build the new list that is returned.
+// (Profiling shows this is implementation is faster (even for small
+// lists) than a recursive implementation even though this implement
+// requires a call to Reverse().)
 func (l *SList[T]) Take(n uint64) *SList[T] {
 	result := NewSList[T]()
 
-	for range min(n, l.Length()) {
+	for i := uint64(0); (i < n) && (l != nil); i++ {
 		result = result.PushFront(l.value)
 		l = l.next
 	}
@@ -190,7 +192,7 @@ func (l *SList[T]) Take(n uint64) *SList[T] {
 func (l *SList[T]) TakeWhile(f func(x T) bool) *SList[T] {
 	result := NewSList[T]()
 
-	for range l.Length() {
+	for l != nil {
 		if !f(l.value) {
 			break
 		}
@@ -284,19 +286,13 @@ func (l *SList[T]) MergeSort(isLessThan func(l1, l2 T) bool) *SList[T] {
 func (l *SList[T]) String() string {
 	var b strings.Builder
 
-	// Convert the value to display string.
-	valueToString := func(value T) string {
-		return fmt.Sprintf("%v", value)
-	}
-
 	// Generate the string
 	b.WriteString("[")
-	for i := range l.Length() {
-		if i > 0 {
+	for curr := l; curr != nil; curr = curr.next {
+		if curr != l {
 			b.WriteString(", ")
 		}
-		b.WriteString(valueToString(l.value))
-		l = l.next
+		b.WriteString(fmt.Sprintf("%v", curr.value))
 	}
 	b.WriteString("]")
 
