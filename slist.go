@@ -27,6 +27,29 @@ func NewSList[T any]() *SList[T] {
 	return nil
 }
 
+// NewSListFromSlice returns a new SList from the slice xs by
+// performing a shallow copy on each element in xs.
+func NewSListFromSlice[T any](xs []T) *SList[T] {
+	result := NewSList[T]()
+	for i := len(xs); i > 0; i-- {
+		result = result.PushFront(xs[i-1])
+	}
+	return result
+}
+
+// ToSlice returns a new slice having the same elements as this list.
+// The slice is created using shallow copies of the elements of this
+// list.
+func (l *SList[T]) ToSlice() []T {
+	rLen := l.Length()
+	result := make([]T, rLen)
+	for i := uint64(0); (i < rLen) && (l != nil); i++ {
+		result[i] = l.value
+		l = l.next
+	}
+	return result
+}
+
 // Empty returns true if the list is empty; otherwise, it returns
 // false.
 func (l *SList[T]) Empty() bool {
@@ -34,6 +57,30 @@ func (l *SList[T]) Empty() bool {
 		return true
 	}
 	return false
+}
+
+// Equal returns true if the two lists have the same length and if
+// every element in this xs list is equal to the corresponding element
+// in the ys list as determined by the isEqual function.
+func (xs *SList[T]) Equal(
+	ys *SList[T],
+	isEqual func(x, y T) bool) bool {
+
+	// Compare the lengths.
+	if xs.Length() != ys.Length() {
+		return false
+	}
+
+	// Compare each pair of elements.
+	for (xs != nil) && (ys != nil) {
+		if !isEqual(xs.value, ys.value) {
+			return false
+		}
+		xs = xs.next
+		ys = ys.next
+	}
+
+	return true
 }
 
 // PushFront appends the value to the front of the list.  This method
@@ -162,7 +209,10 @@ func (l *SList[T]) TakeUntil(f func(x T) bool) *SList[T] {
 }
 
 // Contains returns true if the list contains an element that
-// satisfies the predicate.
+// satisfies the predicate.  Note that we cannot just pass in an
+// element of type T to compare directly because T is constrained by
+// "any" not "comparable".  This is done so SList works with more
+// types.
 func (l *SList[T]) Contains(f func(x T) bool) bool {
 	return l.DropUntil(f) != nil
 }
@@ -170,6 +220,64 @@ func (l *SList[T]) Contains(f func(x T) bool) bool {
 // Nth returns the nth element (zero-based).
 func (l *SList[T]) Nth(n uint64) (T, bool) {
 	return l.Drop(n).Head()
+}
+
+// Merge the sorted lists xs and ys into a new sorted list and return
+// the result.
+func (xs *SList[T]) Merge(
+	ys *SList[T],
+	isLessThan func(x, y T) bool) *SList[T] {
+
+	// Generate the slice to return.
+	result := NewSList[T]()
+
+	// Merge the lists into the result.
+	for (xs != nil) || (ys != nil) {
+
+		// When we run out of xs, the next value must come from ys.
+		if xs == nil {
+			result = result.PushFront(ys.value)
+			ys = ys.next
+			continue
+		}
+
+		// When we run out of ys, the next value must come from xs.
+		if ys == nil {
+			result = result.PushFront(xs.value)
+			xs = xs.next
+			continue
+		}
+
+		// We still have values in both xs and ys.  Because xs and ys
+		// are both sorted, the value at xsIndex is the smallest value
+		// in xs, and the value at ysIndex is the smallest value in
+		// ys.  We just need to compare the two values at xsIndex and
+		// ysIndex and copy the smaller to the result.
+		if isLessThan(xs.value, ys.value) {
+			result = result.PushFront(xs.value)
+			xs = xs.next
+		} else {
+			result = result.PushFront(ys.value)
+			ys = ys.next
+		}
+
+	}
+
+	return result.Reverse()
+}
+
+func (l *SList[T]) MergeSort(isLessThan func(l1, l2 T) bool) *SList[T] {
+
+	// Base case.
+	if l.Length() <= 1 {
+		return l
+	}
+
+	// Divide and conquer.
+	mid := l.Length() / 2
+	xs := l.Take(mid).MergeSort(isLessThan)
+	ys := l.Drop(mid).MergeSort(isLessThan)
+	return xs.Merge(ys, isLessThan)
 }
 
 // String returns the string representation of the list.
