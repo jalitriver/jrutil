@@ -1050,3 +1050,37 @@ func TestSListMergeSort(t *testing.T) {
 		}
 	}
 }
+
+func TestSListString(t *testing.T) {
+	type Data struct {
+		xs *SList[int]
+		expected string
+	}
+
+	data := []Data{
+		{
+			xs: NewSListFromSlice([]int{}),
+			expected: "[]",
+		},
+		{
+			xs: NewSListFromSlice([]int{0}),
+			expected: "[0]",
+		},
+		{
+			xs: NewSListFromSlice([]int{0, 1}),
+			expected: "[0, 1]",
+		},
+		{
+			xs: NewSListFromSlice([]int{0, 1, 2}),
+			expected: "[0, 1, 2]",
+		},
+	}
+
+	for _, d := range data {
+		actual := d.xs.String()
+		if actual != d.expected {
+			t.Fatalf("SList.String(%v): expected=%v  actual=%v",
+				d.xs, d.expected, actual)
+		}
+	}
+}
