@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestMerge(t *testing.T) {
+func TestMergeSlices(t *testing.T) {
 	type Data struct {
 		xs       []int
 		ys       []int
@@ -86,7 +86,7 @@ func TestMerge(t *testing.T) {
 	}
 }
 
-func TestMergeSort(t *testing.T) {
+func TestMergeSortSlices(t *testing.T) {
 	type Data struct {
 		xs       []int
 		expected []int
