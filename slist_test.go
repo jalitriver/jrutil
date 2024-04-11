@@ -589,6 +589,102 @@ func TestSListDropWhile(t *testing.T) {
 	}
 }
 
+func TestSListTake(t *testing.T) {
+	type Data struct {
+		n        uint64
+		xs       *SList[int]
+		expected *SList[int]
+	}
+
+	data := []Data{
+		{
+			n:        0,
+			xs:       NewSListFromSlice([]int{}),
+			expected: NewSListFromSlice([]int{}),
+		},
+		{
+			n:        1,
+			xs:       NewSListFromSlice([]int{}),
+			expected: NewSListFromSlice([]int{}),
+		},
+		{
+			n:        2,
+			xs:       NewSListFromSlice([]int{}),
+			expected: NewSListFromSlice([]int{}),
+		},
+		{
+			n:        0,
+			xs:       NewSListFromSlice([]int{0}),
+			expected: NewSListFromSlice([]int{}),
+		},
+		{
+			n:        1,
+			xs:       NewSListFromSlice([]int{0}),
+			expected: NewSListFromSlice([]int{0}),
+		},
+		{
+			n:        2,
+			xs:       NewSListFromSlice([]int{0}),
+			expected: NewSListFromSlice([]int{0}),
+		},
+		{
+			n:        0,
+			xs:       NewSListFromSlice([]int{0, 1}),
+			expected: NewSListFromSlice([]int{}),
+		},
+		{
+			n:        1,
+			xs:       NewSListFromSlice([]int{0, 1}),
+			expected: NewSListFromSlice([]int{0}),
+		},
+		{
+			n:        2,
+			xs:       NewSListFromSlice([]int{0, 1}),
+			expected: NewSListFromSlice([]int{0, 1}),
+		},
+		{
+			n:        3,
+			xs:       NewSListFromSlice([]int{0, 1}),
+			expected: NewSListFromSlice([]int{0, 1}),
+		},
+		{
+			n:        0,
+			xs:       NewSListFromSlice([]int{0, 1, 2}),
+			expected: NewSListFromSlice([]int{}),
+		},
+		{
+			n:        1,
+			xs:       NewSListFromSlice([]int{0, 1, 2}),
+			expected: NewSListFromSlice([]int{0,}),
+		},
+		{
+			n:        2,
+			xs:       NewSListFromSlice([]int{0, 1, 2}),
+			expected: NewSListFromSlice([]int{0, 1}),
+		},
+		{
+			n:        3,
+			xs:       NewSListFromSlice([]int{0, 1, 2}),
+			expected: NewSListFromSlice([]int{0, 1, 2}),
+		},
+		{
+			n:        4,
+			xs:       NewSListFromSlice([]int{0, 1, 2}),
+			expected: NewSListFromSlice([]int{0, 1, 2}),
+		},
+	}
+
+	for _, d := range data {
+		actual := d.xs.Take(d.n)
+		if !actual.Equal(
+			d.expected,
+			func(x1, x2 int) bool { return x1 == x2 }) {
+			t.Errorf("SList.Take(%v, %v): expected=%v  actual=%v",
+				d.xs, d.n, d.expected, actual)
+		}
+	}
+}
+
 func TestSListTakeWhile(t *testing.T) {
 	type Data struct {
 		breakPoint int
