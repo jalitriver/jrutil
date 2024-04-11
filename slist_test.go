@@ -655,7 +655,7 @@ func TestSListTake(t *testing.T) {
 		{
 			n:        1,
 			xs:       NewSListFromSlice([]int{0, 1, 2}),
-			expected: NewSListFromSlice([]int{0,}),
+			expected: NewSListFromSlice([]int{0}),
 		},
 		{
 			n:        2,
@@ -1053,25 +1053,25 @@ func TestSListMergeSort(t *testing.T) {
 
 func TestSListString(t *testing.T) {
 	type Data struct {
-		xs *SList[int]
+		xs       *SList[int]
 		expected string
 	}
 
 	data := []Data{
 		{
-			xs: NewSListFromSlice([]int{}),
+			xs:       NewSListFromSlice([]int{}),
 			expected: "[]",
 		},
 		{
-			xs: NewSListFromSlice([]int{0}),
+			xs:       NewSListFromSlice([]int{0}),
 			expected: "[0]",
 		},
 		{
-			xs: NewSListFromSlice([]int{0, 1}),
+			xs:       NewSListFromSlice([]int{0, 1}),
 			expected: "[0, 1]",
 		},
 		{
-			xs: NewSListFromSlice([]int{0, 1, 2}),
+			xs:       NewSListFromSlice([]int{0, 1, 2}),
 			expected: "[0, 1, 2]",
 		},
 	}
