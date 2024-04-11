@@ -12,22 +12,18 @@ package jrutil
 
 import (
 	"fmt"
-	"reflect"
 	"strings"
 )
 
-// SList is a value and a recursive pointer to another list.  The
-// elements in the list are constrained by type fmt.Stringer because
-// we want to be able to convert the list to string which requires
-// converting each element in the list to a string.
-type SList[T fmt.Stringer] struct {
+// SList is a value and a recursive pointer to another list.
+type SList[T any] struct {
 	value  T
 	next   *SList[T]
 	length uint64
 }
 
 // NewSList returns a new SList.
-func NewSList[T fmt.Stringer]() *SList[T] {
+func NewSList[T any]() *SList[T] {
 	return nil
 }
 
@@ -182,9 +178,6 @@ func (l *SList[T]) String() string {
 
 	// Convert the value to display string.
 	valueToString := func(value T) string {
-		if reflect.TypeOf(value) == reflect.TypeOf("") {
-			return fmt.Sprintf("%q", value)
-		}
 		return fmt.Sprintf("%v", value)
 	}
 
