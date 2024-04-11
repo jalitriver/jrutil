@@ -47,7 +47,7 @@ func NewRand() (*rand.Rand, error) {
 // values from xs and ys to the result.  Thus, if complex values are
 // being sorted, xs and ys should hold pointers (for which shallow
 // copying is correct).
-func Merge[T cmp.Ordered](
+func MergeSlices[T cmp.Ordered](
 	xs []T,
 	ys []T,
 	f func(x, y T) bool) []T {
@@ -99,7 +99,7 @@ func Merge[T cmp.Ordered](
 
 // MergeSort returns a new, sorted slice based on the comparison
 // function f.
-func MergeSort[T cmp.Ordered](
+func MergeSortSlices[T cmp.Ordered](
 	xs []T,
 	LessThanFn func(x1, x2 T) bool) []T {
 
@@ -110,8 +110,8 @@ func MergeSort[T cmp.Ordered](
 
 	// Divide and conquer.
 	mid := uint64(len(xs) / 2)
-	return Merge(
-		MergeSort(xs[:mid], LessThanFn),
-		MergeSort(xs[mid:], LessThanFn),
+	return MergeSlices(
+		MergeSortSlices(xs[:mid], LessThanFn),
+		MergeSortSlices(xs[mid:], LessThanFn),
 		LessThanFn)
 }
