@@ -53,10 +53,7 @@ func (l *SList[T]) ToSlice() []T {
 // Empty returns true if the list is empty; otherwise, it returns
 // false.
 func (l *SList[T]) Empty() bool {
-	if l == nil {
-		return true
-	}
-	return false
+	return l == nil
 }
 
 // Equal returns true if the two lists have the same length and if
