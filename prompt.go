@@ -2,7 +2,6 @@ package jrutil
 
 import (
 	"bufio"
-	"io"
 	"os"
 	"strings"
 )
@@ -79,9 +78,6 @@ func PromptUnbuffered(prompt string) (string, error) {
 		// Get the next character.
 		_, err = os.Stdin.Read(ch)
 		if err != nil {
-			if err == io.EOF {
-				break
-			}
 			return line.String(), err
 		}
 
