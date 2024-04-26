@@ -232,7 +232,7 @@ func TestForEachLineStrict(t *testing.T) {
 	for _, d := range data {
 		var actual []string
 		r := strings.NewReader(d.text)
-		err := ForEachLine(r, d.stripEOL, /* strict */ true,
+		err := ForEachLine(r, d.stripEOL, true, /* strict */
 			func(line string) (bool, error) {
 				actual = append(actual, line)
 				return true, nil
@@ -420,7 +420,7 @@ func TestForEachLineNotStrict(t *testing.T) {
 	for _, d := range data {
 		var actual []string
 		r := strings.NewReader(d.text)
-		err := ForEachLine(r, d.stripEOL, /* strict */ false,
+		err := ForEachLine(r, d.stripEOL, false, /* strict */
 			func(line string) (bool, error) {
 				actual = append(actual, line)
 				return true, nil
