@@ -19,7 +19,6 @@ func main() {
 
 	for {	
 		name, err = jrutil.Prompt(stdin, stdout, "Name: ")
-		///name, err = jrutil.PromptUnbuffered("Name: ")
 		if name != "" || err == nil {
 			name = strings.TrimSpace(name)
 			fmt.Printf("%s\n", name)
