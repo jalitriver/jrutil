@@ -9,92 +9,92 @@ import (
 )
 
 func TestReadLine(t *testing.T) {
-	data := []struct{
-		text string
+	data := []struct {
+		text     string
 		expected []string
 	}{
 		{
-			text: "",
+			text:     "",
 			expected: []string{},
 		},
 		{
-			text: "\r",
+			text:     "\r",
 			expected: []string{"\r"},
 		},
 		{
-			text: "\n",
+			text:     "\n",
 			expected: []string{"\n"},
 		},
 		{
-			text: "\r\n",
+			text:     "\r\n",
 			expected: []string{"\r\n"},
 		},
 		{
-			text: "foo",
+			text:     "foo",
 			expected: []string{"foo"},
 		},
 		{
-			text: "foo\r",
+			text:     "foo\r",
 			expected: []string{"foo\r"},
 		},
 		{
-			text: "foo\n",
+			text:     "foo\n",
 			expected: []string{"foo\n"},
 		},
 		{
-			text: "foo\r\n",
+			text:     "foo\r\n",
 			expected: []string{"foo\r\n"},
 		},
 		{
-			text: "foo\rbar",
+			text:     "foo\rbar",
 			expected: []string{"foo\r", "bar"},
 		},
 		{
-			text: "foo\nbar",
+			text:     "foo\nbar",
 			expected: []string{"foo\n", "bar"},
 		},
 		{
-			text: "foo\r\nbar",
+			text:     "foo\r\nbar",
 			expected: []string{"foo\r\n", "bar"},
 		},
 		{
-			text: "foo\rbar\r",
+			text:     "foo\rbar\r",
 			expected: []string{"foo\r", "bar\r"},
 		},
 		{
-			text: "foo\nbar\n",
+			text:     "foo\nbar\n",
 			expected: []string{"foo\n", "bar\n"},
 		},
 		{
-			text: "foo\r\nbar\r\n",
+			text:     "foo\r\nbar\r\n",
 			expected: []string{"foo\r\n", "bar\r\n"},
 		},
 		{
-			text: "foo\rbar\rbaz",
+			text:     "foo\rbar\rbaz",
 			expected: []string{"foo\r", "bar\r", "baz"},
 		},
 		{
-			text: "foo\nbar\nbaz",
+			text:     "foo\nbar\nbaz",
 			expected: []string{"foo\n", "bar\n", "baz"},
 		},
 		{
-			text: "foo\r\nbar\r\nbaz",
+			text:     "foo\r\nbar\r\nbaz",
 			expected: []string{"foo\r\n", "bar\r\n", "baz"},
 		},
 		{
-			text: "foo\rbar\rbaz\r",
+			text:     "foo\rbar\rbaz\r",
 			expected: []string{"foo\r", "bar\r", "baz\r"},
 		},
 		{
-			text: "foo\nbar\nbaz\n",
+			text:     "foo\nbar\nbaz\n",
 			expected: []string{"foo\n", "bar\n", "baz\n"},
 		},
 		{
-			text: "foo\r\nbar\r\nbaz\r\n",
+			text:     "foo\r\nbar\r\nbaz\r\n",
 			expected: []string{"foo\r\n", "bar\r\n", "baz\r\n"},
 		},
 		{
-			text: "foo\rbar\nbaz\r\n",
+			text:     "foo\rbar\nbaz\r\n",
 			expected: []string{"foo\r", "bar\n", "baz\r\n"},
 		},
 	}

@@ -60,7 +60,7 @@ func ReadLine(r *bufio.Reader) (string, error) {
 			// If found "\r\n", this line is done.
 			if ch == '\n' {
 				result = append(result, ch)
-				break  // EOL = "\r\n"
+				break // EOL = "\r\n"
 			}
 
 			// Did not find "\r\n" so put the character back.
@@ -69,15 +69,15 @@ func ReadLine(r *bufio.Reader) (string, error) {
 				return "", err
 			}
 
-			break  // EOL = "\r"
+			break // EOL = "\r"
 		}
 
 		// Check for "\n" EOL.
 		if ch == '\n' {
 			result = append(result, ch)
-			break  // EOL = "\n"
+			break // EOL = "\n"
 		}
-		
+
 		// Add this byte to our result.
 		result = append(result, ch)
 	}

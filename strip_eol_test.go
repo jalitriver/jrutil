@@ -6,12 +6,12 @@ import (
 
 func TestStripEOL(t *testing.T) {
 	data := []struct {
-		line string
+		line     string
 		expected string
 	}{
 		{line: "", expected: ""},
 		{line: "\r", expected: ""},
-		{line: "\n", expected: ""},	
+		{line: "\n", expected: ""},
 		{line: "\r\n", expected: ""},
 		{line: "a", expected: "a"},
 		{line: "a\r", expected: "a"},
@@ -21,7 +21,7 @@ func TestStripEOL(t *testing.T) {
 		{line: "foo\r", expected: "foo"},
 		{line: "foo\n", expected: "foo"},
 		{line: "foo\r\n", expected: "foo"},
-}
+	}
 
 	for _, d := range data {
 		actual := StripEOL(d.line)

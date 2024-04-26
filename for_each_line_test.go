@@ -7,221 +7,221 @@ import (
 )
 
 func TestForEachLine(t *testing.T) {
-	data := []struct{
-		text string
+	data := []struct {
+		text     string
 		stripEOL bool
 		expected []string
 	}{
 		// Stripped
 		{
-			text: "",
+			text:     "",
 			stripEOL: true,
 			expected: []string{},
 		},
 		{
-			text: "\r",
+			text:     "\r",
 			stripEOL: true,
 			expected: []string{""},
 		},
 		{
-			text: "\n",
+			text:     "\n",
 			stripEOL: true,
 			expected: []string{""},
 		},
 		{
-			text: "\r\n",
+			text:     "\r\n",
 			stripEOL: true,
 			expected: []string{""},
 		},
 		{
-			text: "foo",
+			text:     "foo",
 			stripEOL: true,
 			expected: []string{"foo"},
 		},
 		{
-			text: "foo\r",
+			text:     "foo\r",
 			stripEOL: true,
 			expected: []string{"foo"},
 		},
 		{
-			text: "foo\n",
+			text:     "foo\n",
 			stripEOL: true,
 			expected: []string{"foo"},
 		},
 		{
-			text: "foo\r\n",
+			text:     "foo\r\n",
 			stripEOL: true,
 			expected: []string{"foo"},
 		},
 		{
-			text: "foo\rbar",
+			text:     "foo\rbar",
 			stripEOL: true,
 			expected: []string{"foo", "bar"},
 		},
 		{
-			text: "foo\nbar",
+			text:     "foo\nbar",
 			stripEOL: true,
 			expected: []string{"foo", "bar"},
 		},
 		{
-			text: "foo\r\nbar",
+			text:     "foo\r\nbar",
 			stripEOL: true,
 			expected: []string{"foo", "bar"},
 		},
 		{
-			text: "foo\r\nbar\r",
+			text:     "foo\r\nbar\r",
 			stripEOL: true,
 			expected: []string{"foo", "bar"},
 		},
 		{
-			text: "foo\nbar\n",
+			text:     "foo\nbar\n",
 			stripEOL: true,
 			expected: []string{"foo", "bar"},
 		},
 		{
-			text: "foo\r\nbar\r\n",
+			text:     "foo\r\nbar\r\n",
 			stripEOL: true,
 			expected: []string{"foo", "bar"},
 		},
 		{
-			text: "foo\r\nbar\rbaz",
+			text:     "foo\r\nbar\rbaz",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 		{
-			text: "foo\nbar\nbaz",
+			text:     "foo\nbar\nbaz",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 		{
-			text: "foo\r\nbar\r\nbaz",
+			text:     "foo\r\nbar\r\nbaz",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 		{
-			text: "foo\r\nbar\rbaz\r",
+			text:     "foo\r\nbar\rbaz\r",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 		{
-			text: "foo\nbar\nbaz\n",
+			text:     "foo\nbar\nbaz\n",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 		{
-			text: "foo\r\nbar\r\nbaz\r\n",
+			text:     "foo\r\nbar\r\nbaz\r\n",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 		{
-			text: "foo\rbar\nbaz\r\n",
+			text:     "foo\rbar\nbaz\r\n",
 			stripEOL: true,
 			expected: []string{"foo", "bar", "baz"},
 		},
 
 		// Unstripped
 		{
-			text: "",
+			text:     "",
 			stripEOL: false,
 			expected: []string{},
 		},
 		{
-			text: "\r",
+			text:     "\r",
 			stripEOL: false,
 			expected: []string{"\r"},
 		},
 		{
-			text: "\n",
+			text:     "\n",
 			stripEOL: false,
 			expected: []string{"\n"},
 		},
 		{
-			text: "\r\n",
+			text:     "\r\n",
 			stripEOL: false,
 			expected: []string{"\r\n"},
 		},
 		{
-			text: "foo",
+			text:     "foo",
 			stripEOL: false,
 			expected: []string{"foo"},
 		},
 		{
-			text: "foo\r",
+			text:     "foo\r",
 			stripEOL: false,
 			expected: []string{"foo\r"},
 		},
 		{
-			text: "foo\n",
+			text:     "foo\n",
 			stripEOL: false,
 			expected: []string{"foo\n"},
 		},
 		{
-			text: "foo\r\n",
+			text:     "foo\r\n",
 			stripEOL: false,
 			expected: []string{"foo\r\n"},
 		},
 		{
-			text: "foo\rbar",
+			text:     "foo\rbar",
 			stripEOL: false,
 			expected: []string{"foo\r", "bar"},
 		},
 		{
-			text: "foo\nbar",
+			text:     "foo\nbar",
 			stripEOL: false,
 			expected: []string{"foo\n", "bar"},
 		},
 		{
-			text: "foo\r\nbar",
+			text:     "foo\r\nbar",
 			stripEOL: false,
 			expected: []string{"foo\r\n", "bar"},
 		},
 		{
-			text: "foo\rbar\r",
+			text:     "foo\rbar\r",
 			stripEOL: false,
 			expected: []string{"foo\r", "bar\r"},
 		},
 		{
-			text: "foo\nbar\n",
+			text:     "foo\nbar\n",
 			stripEOL: false,
 			expected: []string{"foo\n", "bar\n"},
 		},
 		{
-			text: "foo\r\nbar\r\n",
+			text:     "foo\r\nbar\r\n",
 			stripEOL: false,
 			expected: []string{"foo\r\n", "bar\r\n"},
 		},
 		{
-			text: "foo\rbar\rbaz",
+			text:     "foo\rbar\rbaz",
 			stripEOL: false,
 			expected: []string{"foo\r", "bar\r", "baz"},
 		},
 		{
-			text: "foo\nbar\nbaz",
+			text:     "foo\nbar\nbaz",
 			stripEOL: false,
 			expected: []string{"foo\n", "bar\n", "baz"},
 		},
 		{
-			text: "foo\r\nbar\r\nbaz",
+			text:     "foo\r\nbar\r\nbaz",
 			stripEOL: false,
 			expected: []string{"foo\r\n", "bar\r\n", "baz"},
 		},
 		{
-			text: "foo\rbar\rbaz\r",
+			text:     "foo\rbar\rbaz\r",
 			stripEOL: false,
 			expected: []string{"foo\r", "bar\r", "baz\r"},
 		},
 		{
-			text: "foo\nbar\nbaz\n",
+			text:     "foo\nbar\nbaz\n",
 			stripEOL: false,
 			expected: []string{"foo\n", "bar\n", "baz\n"},
 		},
 		{
-			text: "foo\r\nbar\r\nbaz\r\n",
+			text:     "foo\r\nbar\r\nbaz\r\n",
 			stripEOL: false,
 			expected: []string{"foo\r\n", "bar\r\n", "baz\r\n"},
 		},
 		{
-			text: "foo\rbar\nbaz\r\n",
+			text:     "foo\rbar\nbaz\r\n",
 			stripEOL: false,
 			expected: []string{"foo\r", "bar\n", "baz\r\n"},
 		},
@@ -230,7 +230,7 @@ func TestForEachLine(t *testing.T) {
 	for _, d := range data {
 		var actual []string
 		r := strings.NewReader(d.text)
-		err := ForEachLine(r, d.stripEOL, func (line string) (bool, error) {
+		err := ForEachLine(r, d.stripEOL, func(line string) (bool, error) {
 			actual = append(actual, line)
 			return true, nil
 		})
