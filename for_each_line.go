@@ -11,7 +11,9 @@ import (
 // stripEOL is true, the EOLs will be stripped from the line before fn
 // is called.  To receive the next line of text, fn must return (true,
 // nil).  If fn returns an error, it is forward to the caller as the
-// error returned by ForEachLine().
+// error returned by ForEachLine().  If fn is translating input text
+// and writing it back out, for best performance, fn should write to a
+// bufio.Writer wrapper.
 func ForEachLine(
 	r io.Reader,
 	stripEOL bool,
