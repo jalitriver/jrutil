@@ -6,17 +6,26 @@ import (
 )
 
 // ForEachLine invokes the function fn for each line of text in the
-// io.Reader r.  This method uses [jrutil.ReadLine()] to get the next
-// line so it works with DOS, Mac, and UNIX EOL sequences.  If
-// stripEOL is true, the EOLs will be stripped from the line before fn
-// is called.  To receive the next line of text, fn must return (true,
-// nil).  If fn returns an error, it is forward to the caller as the
-// error returned by ForEachLine().  If fn is translating input text
-// and writing it back out, for best performance, fn should write to a
+// io.Reader r.
+//
+// If strict is true, this method uses [jrutil.ReadLine()] to get the
+// next line which is slower but works with DOS, Mac, and UNIX EOL
+// sequences.  If strict is false (recommended), this method uses
+// [bufio.ReadString()] which is over twice as fast and works with DOS
+// and UNIX EOLs but not Mac EOLs.
+//
+// If stripEOL is true, the EOLs will be stripped from the line before
+// fn is called.
+//
+// To receive the next line of text, fn must return (true, nil).  If
+// fn returns an error, it is forward to the caller as the error
+// returned by ForEachLine().  If fn is translating input text and
+// writing it back out, for best performance, fn should write to a
 // bufio.Writer wrapper.
 func ForEachLine(
 	r io.Reader,
 	stripEOL bool,
+	strict bool,
 	fn func(string) (bool, error),
 ) error {
 
@@ -32,10 +41,16 @@ func ForEachLine(
 	// before dealing with the error.
 	for {
 		var more bool
+		var err error
 		var fnErr error
+		var line string
 
 		// Read the next line of text.
-		line, err := ReadLine(br)
+		if strict {
+			line, err = ReadLine(br)
+		} else {
+			line, err = br.ReadString('\n')
+		}
 
 		// Invoke the callback if at least part of the next line of
 		// text was read.
