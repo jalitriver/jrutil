@@ -6,6 +6,20 @@ import (
 	"testing"
 )
 
+func TestMakeRandomBytes(t *testing.T) {
+	for _, count := range []uint64 {0, 1, 2, 32, 64, 128} {
+		bs, err := MakeRandomBytes(count)
+		if err != nil {
+			t.Errorf("MakeRandomBytes: %v", err)
+		}
+		if uint64(len(bs)) != count {
+			t.Errorf(
+				"MakeRandomBytes(%v): expected_length=%v  actual_length=%v",
+				count, count, len(bs))
+		}
+	}
+}
+
 func TestMergeSlices(t *testing.T) {
 	type Data struct {
 		xs       []int

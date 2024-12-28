@@ -23,7 +23,7 @@ func IfElse[T any](b bool, consequent T, alternative T) T {
 // MakeRandomBytes returns a slice of bytes initialzed from
 // crypto.rand.Read().
 func MakeRandomBytes(n uint64) ([]byte, error) {
-	bs := make([]byte, 32)
+	bs := make([]byte, n)
 	_, err := crand.Read(bs)
 	if err != nil {
 		return nil, err
