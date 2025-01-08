@@ -15,8 +15,8 @@ import (
 // follows which should only happen once probably early in your main()
 // function:
 //
-//  fin := bufio.NewReader(os.Stdin)
-//  fout := bufio.NewWriter(os.Stdout)
+//	fin := bufio.NewReader(os.Stdin)
+//	fout := bufio.NewWriter(os.Stdout)
 //
 // The reason for having to use buffered I/O for stdin and stdout is
 // to avoid conflicts with other parts of the code that might need to

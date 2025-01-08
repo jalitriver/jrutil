@@ -13,7 +13,7 @@ func main() {
 	var err error
 	var name string
 
-	for {	
+	for {
 		name, err = jrutil.PromptUnbuffered("Name: ")
 		if name != "" || err == nil {
 			name = strings.TrimSpace(name)
@@ -30,5 +30,5 @@ out:
 		fmt.Fprintf(os.Stderr, "*** Error: %v\n", err)
 		os.Exit(1)
 	}
-	
+
 }

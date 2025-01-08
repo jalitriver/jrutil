@@ -7,7 +7,7 @@ import (
 )
 
 func TestMakeRandomBytes(t *testing.T) {
-	for _, count := range []uint64 {0, 1, 2, 32, 64, 128} {
+	for _, count := range []uint64{0, 1, 2, 32, 64, 128} {
 		bs, err := MakeRandomBytes(count)
 		if err != nil {
 			t.Errorf("MakeRandomBytes: %v", err)

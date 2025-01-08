@@ -17,7 +17,7 @@ func main() {
 	stdin := bufio.NewReader(os.Stdin)
 	stdout := bufio.NewWriter(os.Stdout)
 
-	for {	
+	for {
 		name, err = jrutil.Prompt(stdin, stdout, "Name: ")
 		if name != "" || err == nil {
 			name = strings.TrimSpace(name)
@@ -34,5 +34,5 @@ out:
 		fmt.Fprintf(os.Stderr, "*** Error: %v\n", err)
 		os.Exit(1)
 	}
-	
+
 }

@@ -6,7 +6,7 @@ import (
 
 // Realpath returns the real path given a file name or an error.
 func Realpath(p string) (string, error) {
-	var err  error
+	var err error
 	var aPath string
 	var rPath string
 

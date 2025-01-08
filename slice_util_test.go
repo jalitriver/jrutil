@@ -269,8 +269,8 @@ func TestSubtractSlice(t *testing.T) {
 			expected: []string{"bar"},
 		},
 		{
-			xs: []string{"foo", "bar"},
-			ys: []string{"foo", "bar"},
+			xs:       []string{"foo", "bar"},
+			ys:       []string{"foo", "bar"},
 			expected: []string{},
 		},
 	}
