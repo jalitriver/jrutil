@@ -6,6 +6,13 @@ import (
 	"math/rand/v2"
 )
 
+// OrderedNumber is similar to cmp.Ordered except it does not include string.
+type OrderedNumber interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 |
+		~float32 | ~float64
+}
+
 // MakePtr is useful for making pointers from intrinsic types like int
 // for which the address-of operator does not work.
 func MakePtr[T any](x T) *T {
@@ -18,6 +25,17 @@ func IfElse[T any](b bool, consequent T, alternative T) T {
 		return consequent
 	}
 	return alternative
+}
+
+// Signum returns -1, 0, or 1 if x is negative, zero, or positive respectively.
+func Signum[T OrderedNumber](x T) int {
+	if x > 0 {
+		return 1
+	}
+	if x < 0 {
+		return -1
+	}
+	return 0
 }
 
 // MakeRandomBytes returns a slice of bytes initialzed from

@@ -6,6 +6,48 @@ import (
 	"testing"
 )
 
+func TestSignum(t *testing.T) {
+    type Data[T OrderedNumber] struct {
+        x T
+        expected int
+    }
+
+    data := []any {
+        Data[int64]{-3, -1},
+        Data[int64]{-2, -1},
+        Data[int64]{-1, -1},
+        Data[int64]{0, 0},
+        Data[int64]{1, 1},
+        Data[int64]{2, 1},
+        Data[int64]{3, 1},
+
+        Data[float64]{-3.0, -1},
+        Data[float64]{-2.0, -1},
+        Data[float64]{-1.0, -1},
+        Data[float64]{0.0, 0},
+        Data[float64]{1.0, 1},
+        Data[float64]{2.0, 1},
+        Data[float64]{3.0, 1},
+    }
+
+    for _, d := range data {
+        switch d := d.(type) {
+            case Data[int64]:
+                actual := Signum(d.x)
+                if actual != d.expected {
+                    t.Errorf("Signum(%v): expected=%v  actual=%v", d.x, d.expected, actual)
+                }
+            case Data[float64]:
+                actual := Signum(d.x)
+                if actual != d.expected {
+                    t.Errorf("Signum(%v): expected=%v  actual=%v", d.x, d.expected, actual)
+                }
+            default:
+                t.Errorf("unexpected test case")
+        }
+    }
+}
+
 func TestMakeRandomBytes(t *testing.T) {
 	for _, count := range []uint64{0, 1, 2, 32, 64, 128} {
 		bs, err := MakeRandomBytes(count)
